@@ -86,14 +86,12 @@
                   texto = res.data.data.cif;
                   break;
                 case 2:
-                  res.data.data.portales.forEach(element => {
-                    console.log(element.numero);
+                  res.data.data.portales.forEach((element) => {
                     texto += element.numero + " ";
-                    console.log(texto);
                   });
                   break;
                 case 3:
-                  texto = res.data.data.esPremium;
+                  texto = res.data.data.esPremium ? "Sí" : "No";
                   break;
                 case 4:
                   texto = res.data.data.direccion;
