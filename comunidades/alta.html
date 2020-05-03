@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Alta Comunidad</title>
+    <script src="../node_modules/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../estilos/estilos.css" />
+  </head>
+  <body>
+    <div style="text-align: center;">
+      <h1>
+        Alta de una comunidad
+      </h1>
+    </div>
+    <div>
+      <table id="tablaFormulario">
+        <tbody>
+          <tr>
+            <td>Nombre.............:</td>
+            <td><input type="text" id="nombre" name="nombre" size="40" /></td>
+          </tr>
+          <tr>
+            <td>CIF....................:</td>
+            <td><input type="text" id="cif" name="cif" size="15" /></td>
+          </tr>
+          <tr>
+            <td>Dirección..........:</td>
+            <td>
+              <input type="text" id="direccion" name="direccion" size="100" />
+            </td>
+          </tr>
+          <tr>
+            <td>Ciudad...............:</td>
+            <td>
+              <select name="ciudad" id="ciudad">
+                <option value="0"></option>
+                <option value="1">Madrid</option>
+                <option value="2">Córdoba</option>
+                <option value="3">Sevilla</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Localidad............:</td>
+            <td>
+              <select name="localidad" id="localidad">
+                <option value="0"></option>
+                <option value="1">Alcobendas</option>
+                <option value="2">San Sebastián de los Reyes</option>
+                <option value="3">Fernan Núñez</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Código Postal....:</td>
+            <td><input type="number" id="cp" name="cp" size="5" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <table id="tablaPortales">
+        <tbody>
+          <tr>
+            Portales
+          </tr>
+          <tr>
+            <td>
+              Portal 1
+            </td>
+            <td><input type="text" id="portal1" name="portal1" size="15" /></td>
+          </tr>
+          <tr>
+            <td>
+              Portal 2
+            </td>
+            <td><input type="text" id="portal2" name="portal2" size="15" /></td>
+          </tr>
+          <tr>
+            <td>
+              Portal 3
+            </td>
+            <td><input type="text" id="portal3" name="portal3" size="15" /></td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                style="align-self: center;"
+                type="submit"
+                value="Alta Comunidad"
+                onclick="altaComunidad()"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <br />
+    <script>
+      function altaComunidad() {
+        const nombre = document
+          .getElementById("tablaFormulario")
+          .getElementsByTagName("input")[0].value;
+        const cif = document
+          .getElementById("tablaFormulario")
+          .getElementsByTagName("input")[1].value;
+        const direccion = document
+          .getElementById("tablaFormulario")
+          .getElementsByTagName("input")[2].value;
+        const codigoPostal = document
+          .getElementById("tablaFormulario")
+          .getElementsByTagName("input")[3].value;
+        const ciudad = document
+          .getElementById("tablaFormulario")
+          .getElementsByTagName("select")[0].value;
+        const localidad = document
+          .getElementById("tablaFormulario")
+          .getElementsByTagName("select")[1].value;
+
+        console.log("Nombre = ", nombre);
+        // Objeto principal del JSON
+        var jsonComunidad = new Object();
+        // Array que contendrá los portales
+        var portales = new Array();
+        jsonComunidad.nombre = nombre;
+        jsonComunidad.cif = cif;
+        jsonComunidad.direccion = direccion;
+        jsonComunidad.codigoPostal = codigoPostal;
+        jsonComunidad.ciudad = ciudad;
+        jsonComunidad.localidad = localidad;
+
+        for (
+          var i = 0;
+          i <
+          document.getElementById("tablaPortales").getElementsByTagName("input")
+            .length -
+            1;
+          i++
+        ) {
+          if (
+            document
+              .getElementById("tablaPortales")
+              .getElementsByTagName("input")[i].value != ""
+          ) {
+            var portal = new Object();
+            portal.numero = document
+              .getElementById("tablaPortales")
+              .getElementsByTagName("input")[i].value;
+            portales.push(portal);
+          }
+        }
+        jsonComunidad.portales = portales;
+
+        console.log(JSON.stringify(jsonComunidad));
+
+        axios
+          .post("http://localhost:4000/api/v1/comunidades/alta", jsonComunidad)
+          .then(function (res) {
+            console.log(res.status);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
+    </script>
+  </body>
+</html>
